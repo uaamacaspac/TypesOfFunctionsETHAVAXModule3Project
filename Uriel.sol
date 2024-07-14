@@ -6,7 +6,7 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.0/contr
 
 contract Uriel is ERC20, Ownable {
     constructor(uint256 initialSupply) ERC20("Uriel", "UIL") {
-        _mint(msg.sender, initialSupply); // Mint initial supply to the deployer
+        _mint(msg.sender, initialSupply);
     }
 
     // Function to mint tokens
@@ -17,5 +17,16 @@ contract Uriel is ERC20, Ownable {
     // Function to burn tokens
     function burn(uint256 amount) public {
         _burn(msg.sender, amount);
+    }
+
+    // Custom transfer function
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        require(recipient != address(0), "ERC20: transfer to the zero address");
+        require(balanceOf(msg.sender) >= amount, "ERC20: transfer amount exceeds balance");
+
+        // Call the parent contract's transfer function
+        bool success = super.transfer(recipient, amount);
+
+        return success;
     }
 }
