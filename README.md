@@ -37,6 +37,20 @@ function burn(uint256 amount) public {
 ```
 Allows any token holder to burn their tokens, reducing the total supply.
 
+### Transfer
+```solidity
+function transfer(address recipient, uint256 amount) public override returns (bool) {
+    require(recipient != address(0), "ERC20: transfer to the zero address");
+    require(balanceOf(msg.sender) >= amount, "ERC20: transfer amount exceeds balance");
+
+    // Call the parent contract's transfer function
+    bool success = super.transfer(recipient, amount);
+
+    return success;
+}
+```
+Allows token holders to transfer their token to other addresses. Added this to the code as required by metacrafter and not just use the code from ERC20.
+
 ### ERC20 Inherited Functions
 The following functions are inherited from the OpenZeppelin ERC20 contract:
 - **totalSupply:** Returns the total number of tokens in circulation.
